@@ -15,6 +15,7 @@
     "color_accent": "#19C3C8",
     "color_clean_space": "#FFFFFF",
     "container_width": 1200,
+    "custom_text_product_tag": "custom-text",
     "sections": {
       "header": {
         "type": "header",
@@ -42,7 +43,8 @@
       "color_secondary": "#6F7478",
       "color_accent": "#19C3C8",
       "color_clean_space": "#FFFFFF",
-      "container_width": 1200
+      "container_width": 1200,
+      "custom_text_product_tag": "custom-text"
     }
   }
 }

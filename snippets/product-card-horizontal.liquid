@@ -1,5 +1,6 @@
 {% assign variant_input_id = 'variant-' | append: section.id | append: '-' | append: product.id %}
 {% assign custom_input_id = 'custom-' | append: section.id | append: '-' | append: product.id %}
+{% assign custom_text_tag = settings.custom_text_product_tag | default: 'custom-text' %}
 
 <article class="product-card product-card--horizontal">
   <a class="product-card__media-link" href="{{ product.url }}">
@@ -40,17 +41,19 @@
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
       {% endif %}
 
-      <div class="stack-sm">
-        <label for="{{ custom_input_id }}">Custom text (max 12)</label>
-        <input
-          id="{{ custom_input_id }}"
-          type="text"
-          name="properties[Custom Text]"
-          maxlength="12"
-          pattern=".{0,12}"
-          placeholder="Optional"
-        >
-      </div>
+      {% if product.tags contains custom_text_tag %}
+        <div class="stack-sm">
+          <label for="{{ custom_input_id }}">Custom text (max 12)</label>
+          <input
+            id="{{ custom_input_id }}"
+            type="text"
+            name="properties[Custom Text]"
+            maxlength="12"
+            pattern=".{0,12}"
+            placeholder="Optional"
+          >
+        </div>
+      {% endif %}
 
       <button
         class="button button--accent"

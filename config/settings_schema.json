@@ -41,6 +41,12 @@
         "step": 20,
         "unit": "px",
         "default": 1200
+      },
+      {
+        "type": "text",
+        "id": "custom_text_product_tag",
+        "label": "Custom text product tag",
+        "default": "custom-text"
       }
     ]
   }

@@ -1,4 +1,5 @@
 <section class="section">
+  {% assign custom_text_tag = settings.custom_text_product_tag | default: 'custom-text' %}
   <div class="container main-product">
     <div class="main-product__media">
       {% if product.featured_image %}
@@ -33,15 +34,17 @@
           <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
         {% endunless %}
 
-        <label for="CustomText-{{ section.id }}">Custom text (max 12)</label>
-        <input
-          id="CustomText-{{ section.id }}"
-          type="text"
-          name="properties[Custom Text]"
-          maxlength="12"
-          pattern=".{0,12}"
-          placeholder="Optional"
-        >
+        {% if product.tags contains custom_text_tag %}
+          <label for="CustomText-{{ section.id }}">Custom text (max 12)</label>
+          <input
+            id="CustomText-{{ section.id }}"
+            type="text"
+            name="properties[Custom Text]"
+            maxlength="12"
+            pattern=".{0,12}"
+            placeholder="Optional"
+          >
+        {% endif %}
 
         <button
           class="button button--accent"
