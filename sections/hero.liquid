@@ -1,35 +1,37 @@
 <section class="hero section">
   <div class="page-shell">
-    <div class="hero-card hero-shell hero-banner">
-      <div class="stack-sm hero-content hero-copy">
-        {% if section.settings.kicker != blank %}
-          <span class="hero-kicker">{{ section.settings.kicker }}</span>
-        {% endif %}
-
-        <h1>{{ section.settings.heading }}</h1>
-        <p>{{ section.settings.subheading }}</p>
-
-        <div class="hero-actions">
-          {% if section.settings.button_label != blank and section.settings.button_link != blank %}
-            <a class="button button--accent" href="{{ section.settings.button_link }}">
-              {{ section.settings.button_label }}
-            </a>
-          {% endif %}
-
-          {% if section.settings.secondary_button_label != blank and section.settings.secondary_button_link != blank %}
-            <a class="button button--ghost" href="{{ section.settings.secondary_button_link }}">
-              {{ section.settings.secondary_button_label }}
-            </a>
-          {% endif %}
-        </div>
-      </div>
-
+    <div class="hero-card hero-banner">
       <div class="hero-media hero-banner-media">
         {% if section.settings.hero_image != blank %}
           {{ section.settings.hero_image | image_url: width: 1400 | image_tag: loading: 'eager', alt: section.settings.heading }}
         {% else %}
           <div class="hero-placeholder">Upload a hero image in Theme Editor</div>
         {% endif %}
+      </div>
+
+      <div class="hero-overlay">
+        <div class="stack-sm hero-content hero-copy">
+          {% if section.settings.kicker != blank %}
+            <span class="hero-kicker">{{ section.settings.kicker }}</span>
+          {% endif %}
+
+          <h1>{{ section.settings.heading }}</h1>
+          <p>{{ section.settings.subheading }}</p>
+
+          <div class="hero-actions">
+            {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+              <a class="button button--accent" href="{{ section.settings.button_link }}">
+                {{ section.settings.button_label }}
+              </a>
+            {% endif %}
+
+            {% if section.settings.secondary_button_label != blank and section.settings.secondary_button_link != blank %}
+              <a class="button button--ghost" href="{{ section.settings.secondary_button_link }}">
+                {{ section.settings.secondary_button_label }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
       </div>
     </div>
   </div>

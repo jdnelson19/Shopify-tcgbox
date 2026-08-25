@@ -14,16 +14,21 @@
         {{ product.description }}
       </div>
 
-      {% form 'product', product, class: 'main-product__form stack-sm' %}
+      {% form 'product', product, class: 'main-product__form stack-sm js-variant-form' %}
         {% unless product.has_only_default_variant %}
-          <label for="Variant-{{ section.id }}">Variant</label>
-          <select id="Variant-{{ section.id }}" name="id">
-            {% for variant in product.variants %}
-              <option value="{{ variant.id }}" {% if variant == product.selected_or_first_available_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>
-                {{ variant.title }} - {{ variant.price | money }}
-              </option>
-            {% endfor %}
-          </select>
+          {% for option in product.options_with_values %}
+            <div class="stack-sm">
+              <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+              <select id="Option-{{ section.id }}-{{ forloop.index0 }}" data-variant-option data-option-index="{{ forloop.index0 }}">
+                {% for value in option.values %}
+                  <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endfor %}
+
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id-input>
+          <script type="application/json" data-product-variants>{{ product.variants | json }}</script>
         {% else %}
           <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
         {% endunless %}
@@ -38,7 +43,13 @@
           placeholder="Optional"
         >
 
-        <button class="button button--accent" type="submit" {% unless product.available %}disabled{% endunless %}>
+        <button
+          class="button button--accent"
+          type="submit"
+          data-add-to-cart-label="{{ 'products.product.add_to_cart' | t }}"
+          data-sold-out-label="{{ 'products.product.sold_out' | t }}"
+          {% unless product.available %}disabled{% endunless %}
+        >
           {% if product.available %}
             {{ 'products.product.add_to_cart' | t }}
           {% else %}

@@ -155,25 +155,39 @@ a {
 }
 
 .hero-card {
+  position: relative;
   background:
     radial-gradient(circle at 68% 38%, rgba(25, 195, 200, 0.42), transparent 32%),
     linear-gradient(130deg, #17191c 18%, #252a31 90%);
   border: 1px solid rgba(243, 241, 235, 0.15);
   border-radius: 28px;
   box-shadow: 0 26px 70px rgba(23, 25, 28, 0.22);
-}
-
-.hero-shell {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: stretch;
   overflow: hidden;
   min-height: 480px;
+}
+
+.hero-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(23, 25, 28, 0.86) 8%, rgba(23, 25, 28, 0.52) 46%, rgba(23, 25, 28, 0.2) 80%),
+    linear-gradient(0deg, rgba(23, 25, 28, 0.5), rgba(23, 25, 28, 0.12));
+  z-index: 1;
 }
 
 .hero-content {
   padding: 2.35rem;
   color: #f3f1eb;
+  max-width: 720px;
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 2;
+  min-height: 480px;
+  display: grid;
+  align-items: end;
 }
 
 .hero-kicker {
@@ -213,8 +227,10 @@ a {
 }
 
 .hero-media {
-  min-height: 340px;
+  min-height: 480px;
   background: rgba(12, 16, 21, 0.3);
+  position: absolute;
+  inset: 0;
 }
 
 .hero-media img {
@@ -222,8 +238,8 @@ a {
   height: 100%;
   object-fit: cover;
   display: block;
-  mix-blend-mode: screen;
-  opacity: 0.9;
+  mix-blend-mode: normal;
+  opacity: 1;
 }
 
 .hero-placeholder {
@@ -473,16 +489,13 @@ a {
     padding-top: 1rem;
   }
 
-  .hero-shell {
-    grid-template-columns: 1fr;
-  }
-
   .hero-content {
     padding: 1.4rem;
   }
 
+  .hero-overlay,
   .hero-media {
-    min-height: 250px;
+    min-height: 360px;
   }
 
   .card-grid {
