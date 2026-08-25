@@ -1,38 +1,40 @@
 <header class="site-header" role="banner">
   {% if section.settings.announcement != blank %}
     <div class="header-top">
-      <div class="container">
+      <div class="page-shell">
         <p>{{ section.settings.announcement }}</p>
       </div>
     </div>
   {% endif %}
 
-  <div class="container header-row">
-    <a class="site-title" href="{{ routes.root_url }}">
-      {% if section.settings.logo != blank %}
-        {{ section.settings.logo | image_url: width: 240 | image_tag: alt: shop.name }}
-      {% else %}
-        {{ shop.name }}
-      {% endif %}
-    </a>
-
-    <nav class="site-nav" aria-label="Primary">
-      {% if section.settings.menu != blank %}
-        <ul>
-          {% for link in section.settings.menu.links %}
-            <li>
-              <a href="{{ link.url }}">{{ link.title }}</a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    </nav>
-
-    {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
-      <a class="button button--accent header-cta" href="{{ section.settings.cta_link }}">
-        {{ section.settings.cta_label }}
+  <div class="page-shell topbar-wrap">
+    <div class="topbar header-row">
+      <a class="site-title brand-lockup" href="{{ routes.root_url }}">
+        {% if section.settings.logo != blank %}
+          {{ section.settings.logo | image_url: width: 240 | image_tag: class: 'brand-logo', alt: shop.name }}
+        {% else %}
+          {{ shop.name }}
+        {% endif %}
       </a>
-    {% endif %}
+
+      <nav class="site-nav main-nav" aria-label="Primary">
+        {% if section.settings.menu != blank %}
+          <ul>
+            {% for link in section.settings.menu.links %}
+              <li>
+                <a class="header-nav-button" href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </nav>
+
+      {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+        <a class="button button--accent header-cta" href="{{ section.settings.cta_link }}">
+          {{ section.settings.cta_label }}
+        </a>
+      {% endif %}
+    </div>
   </div>
 </header>
 

@@ -1,7 +1,7 @@
 <section class="hero section">
-  <div class="container">
-    <div class="hero-card hero-shell">
-      <div class="stack-sm hero-content">
+  <div class="page-shell">
+    <div class="hero-card hero-shell hero-banner">
+      <div class="stack-sm hero-content hero-copy">
         {% if section.settings.kicker != blank %}
           <span class="hero-kicker">{{ section.settings.kicker }}</span>
         {% endif %}
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div class="hero-media">
+      <div class="hero-media hero-banner-media">
         {% if section.settings.hero_image != blank %}
           {{ section.settings.hero_image | image_url: width: 1400 | image_tag: loading: 'eager', alt: section.settings.heading }}
         {% else %}
