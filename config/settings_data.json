@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "color_background": "#F3F1EB",
@@ -5,7 +14,26 @@
     "color_secondary": "#6F7478",
     "color_accent": "#19C3C8",
     "color_clean_space": "#FFFFFF",
-    "container_width": 1200
+    "container_width": 1200,
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo": "shopify://shop_images/header_logo.svg",
+          "menu": "main-menu",
+          "announcement": "Free shipping on orders over $100",
+          "cta_label": "Shop now",
+          "cta_link": ""
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "note": "Built for collectors."
+        }
+      }
+    },
+    "content_for_index": []
   },
   "presets": {
     "Default": {
