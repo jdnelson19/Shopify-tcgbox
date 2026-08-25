@@ -1,0 +1,19 @@
+{
+  "general": {
+    "search": {
+      "submit": "Search"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable"
+    }
+  },
+  "collections": {
+    "general": {
+      "title": "Collection"
+    }
+  }
+}

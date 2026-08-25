@@ -1,0 +1,41 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "heading": "Your Next Hit Pull Is Here",
+        "subheading": "Curated booster boxes, preorders, and sealed products for collectors and competitive players.",
+        "button_label": "Shop all products",
+        "button_link": "shopify://collections/all"
+      }
+    },
+    "intro": {
+      "type": "rich-text",
+      "settings": {
+        "heading": "Why TCG Box",
+        "text": "<p>Fast shipping, verified inventory, and a team that lives and breathes cardboard.</p>"
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Featured Collection",
+        "collection": "",
+        "products_to_show": 8
+      }
+    },
+    "support_form": {
+      "type": "support-request-form",
+      "settings": {
+        "heading": "Order support and custom requests",
+        "text": "Need help with an order or want a custom product request? Send us the details and we will follow up."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "intro",
+    "featured",
+    "support_form"
+  ]
+}

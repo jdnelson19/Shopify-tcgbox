@@ -1,0 +1,22 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container footer-row">
+    <div>{{ shop.name }}</div>
+    <div>
+      {{ section.settings.note }}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Footer note",
+      "default": "Built for collectors."
+    }
+  ]
+}
+{% endschema %}

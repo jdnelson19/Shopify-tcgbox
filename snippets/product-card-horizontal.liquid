@@ -1,0 +1,67 @@
+{% assign variant_input_id = 'variant-' | append: section.id | append: '-' | append: product.id %}
+{% assign custom_input_id = 'custom-' | append: section.id | append: '-' | append: product.id %}
+
+<article class="product-card product-card--horizontal">
+  <a class="product-card__media-link" href="{{ product.url }}">
+    <div class="product-card__media product-card__media--horizontal">
+      {% if product.featured_image %}
+        {{ product.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: product.title }}
+      {% endif %}
+    </div>
+  </a>
+
+  <div class="product-card__body stack-sm">
+    <div class="stack-sm">
+      <h3 class="product-card__title">
+        <a href="{{ product.url }}">{{ product.title }}</a>
+      </h3>
+      <div class="product-card__price">{{ product.price | money }}</div>
+      <p class="product-card__excerpt">
+        {{ product.description | strip_html | strip_newlines | truncate: 105 }}
+      </p>
+    </div>
+
+    {% if product.variants.size > 1 %}
+      <ul class="variant-chip-list" role="list">
+        {% for variant in product.variants %}
+          <li>{{ variant.title }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% form 'product', product, class: 'product-card__form stack-sm' %}
+      {% if product.variants.size > 1 %}
+        <label for="{{ variant_input_id }}">Choose variation</label>
+        <select id="{{ variant_input_id }}" name="id">
+          {% for variant in product.variants %}
+            <option value="{{ variant.id }}" {% if variant == product.selected_or_first_available_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>
+              {{ variant.title }} - {{ variant.price | money }}
+            </option>
+          {% endfor %}
+        </select>
+      {% else %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      {% endif %}
+
+      <div class="stack-sm">
+        <label for="{{ custom_input_id }}">Custom text (max 12)</label>
+        <input
+          id="{{ custom_input_id }}"
+          type="text"
+          name="properties[Custom Text]"
+          maxlength="12"
+          pattern=".{0,12}"
+          placeholder="Optional"
+        >
+      </div>
+
+      <button class="button button--accent" type="submit" {% unless product.available %}disabled{% endunless %}>
+        {% if product.available %}
+          {{ 'products.product.add_to_cart' | t }}
+        {% else %}
+          {{ 'products.product.sold_out' | t }}
+        {% endif %}
+      </button>
+    {% endform %}
+  </div>
+</article>

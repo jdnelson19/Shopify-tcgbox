@@ -1,0 +1,82 @@
+<section class="section">
+  <div class="container">
+    <div class="support-form-card stack-sm">
+      {% if section.settings.heading != blank %}
+        <h2>{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <p class="support-form-intro">{{ section.settings.text }}</p>
+      {% endif %}
+
+      {% form 'contact', class: 'support-form stack-sm' %}
+        {% if form.posted_successfully? %}
+          <p class="support-form-success">Thanks! Your request has been submitted and we will get back to you shortly.</p>
+        {% endif %}
+
+        {{ form.errors | default_errors }}
+
+        <div class="support-form-grid">
+          <div class="stack-sm">
+            <label for="SupportName-{{ section.id }}">Name</label>
+            <input id="SupportName-{{ section.id }}" type="text" name="contact[name]" value="{{ form.name }}" required>
+          </div>
+
+          <div class="stack-sm">
+            <label for="SupportEmail-{{ section.id }}">Email</label>
+            <input id="SupportEmail-{{ section.id }}" type="email" name="contact[email]" value="{{ form.email }}" required>
+          </div>
+        </div>
+
+        <div class="support-form-grid">
+          <div class="stack-sm">
+            <label for="SupportType-{{ section.id }}">Request type</label>
+            <select id="SupportType-{{ section.id }}" name="contact[Request Type]">
+              <option value="Order Support">Order Support</option>
+              <option value="Custom Order Request">Custom Order Request</option>
+            </select>
+          </div>
+
+          <div class="stack-sm">
+            <label for="SupportOrder-{{ section.id }}">Order number (optional)</label>
+            <input id="SupportOrder-{{ section.id }}" type="text" name="contact[Order Number]" placeholder="#1001">
+          </div>
+        </div>
+
+        <div class="stack-sm">
+          <label for="SupportMessage-{{ section.id }}">Message</label>
+          <textarea id="SupportMessage-{{ section.id }}" name="contact[body]" rows="6" required>{{ form.body }}</textarea>
+        </div>
+
+        <div>
+          <button type="submit" class="button button--accent">Send Request</button>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Support request form",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Order support and custom requests"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Intro text",
+      "default": "Need help with an order or want a custom product request? Send us the details and we will follow up."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Support request form"
+    }
+  ]
+}
+{% endschema %}

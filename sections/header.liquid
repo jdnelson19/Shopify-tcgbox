@@ -1,0 +1,73 @@
+<header class="site-header" role="banner">
+  {% if section.settings.announcement != blank %}
+    <div class="header-top">
+      <div class="container">
+        <p>{{ section.settings.announcement }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="container header-row">
+    <a class="site-title" href="{{ routes.root_url }}">
+      {% if section.settings.logo != blank %}
+        {{ section.settings.logo | image_url: width: 240 | image_tag: alt: shop.name }}
+      {% else %}
+        {{ shop.name }}
+      {% endif %}
+    </a>
+
+    <nav class="site-nav" aria-label="Primary">
+      {% if section.settings.menu != blank %}
+        <ul>
+          {% for link in section.settings.menu.links %}
+            <li>
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </nav>
+
+    {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+      <a class="button button--accent header-cta" href="{{ section.settings.cta_link }}">
+        {{ section.settings.cta_label }}
+      </a>
+    {% endif %}
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "Announcement",
+      "default": "Free shipping on orders over $100"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA link"
+    }
+  ]
+}
+{% endschema %}

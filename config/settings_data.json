@@ -1,0 +1,20 @@
+{
+  "current": {
+    "color_background": "#F3F1EB",
+    "color_primary": "#17191C",
+    "color_secondary": "#6F7478",
+    "color_accent": "#19C3C8",
+    "color_clean_space": "#FFFFFF",
+    "container_width": 1200
+  },
+  "presets": {
+    "Default": {
+      "color_background": "#F3F1EB",
+      "color_primary": "#17191C",
+      "color_secondary": "#6F7478",
+      "color_accent": "#19C3C8",
+      "color_clean_space": "#FFFFFF",
+      "container_width": 1200
+    }
+  }
+}

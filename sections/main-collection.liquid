@@ -1,0 +1,25 @@
+<section class="section">
+  <div class="container stack-sm">
+    <h1>{{ collection.title }}</h1>
+    {% if collection.description != blank %}
+      <div>{{ collection.description }}</div>
+    {% endif %}
+
+    {% if collection.products_count > 0 %}
+      <div class="card-grid">
+        {% for product in collection.products %}
+          {% render 'product-card-horizontal', product: product %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No products found in this collection.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main collection",
+  "settings": []
+}
+{% endschema %}
