@@ -1,0 +1,72 @@
+<section class="section about-section">
+  <div class="container">
+    <div class="about-card">
+      <div class="about-grid">
+        <div class="stack-sm">
+          {% if section.settings.heading != blank %}
+            <h2>{{ section.settings.heading }}</h2>
+          {% endif %}
+
+          {% if section.settings.text != blank %}
+            <div class="about-copy">{{ section.settings.text }}</div>
+          {% endif %}
+
+          {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+            <div>
+              <a class="button button--accent" href="{{ section.settings.button_link }}">{{ section.settings.button_label }}</a>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="about-media">
+          {% if section.settings.image != blank %}
+            {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: section.settings.heading }}
+          {% else %}
+            <div class="about-placeholder">Add an About image in Theme Editor</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About TCG Box"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>We are collectors serving collectors, focused on trusted products, quick shipping, and fair support.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About"
+    }
+  ]
+}
+{% endschema %}

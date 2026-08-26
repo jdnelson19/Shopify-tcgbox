@@ -181,6 +181,51 @@ if (cartDrawerBody) {
   });
 }
 
+const cartPage = document.querySelector("[data-cart-page]");
+const applyCartPageChange = async (lineIndex, quantity) => {
+  try {
+    await fetch("/cart/change.js", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ line: lineIndex, quantity }),
+    });
+
+    window.location.reload();
+  } catch (error) {
+    return;
+  }
+};
+
+if (cartPage) {
+  cartPage.addEventListener("click", async (event) => {
+    const qtyButton = event.target.closest("[data-qty-change]");
+    const removeButton = event.target.closest("[data-remove-line]");
+
+    if (!qtyButton && !removeButton) {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (removeButton) {
+      const lineIndex = Number(removeButton.dataset.removeLine);
+      await applyCartPageChange(lineIndex, 0);
+      return;
+    }
+
+    const qtyContainer = qtyButton.closest("[data-cart-page-qty]");
+    const qtyValue = qtyContainer?.querySelector(".cart-qty__value");
+    const lineIndex = Number(qtyContainer?.dataset.lineIndex);
+    const currentQty = Number(qtyValue?.textContent || 0);
+    const quantity = qtyButton.dataset.qtyChange === "increase" ? currentQty + 1 : Math.max(currentQty - 1, 0);
+
+    await applyCartPageChange(lineIndex, quantity);
+  });
+}
+
 document.querySelectorAll("form.js-variant-form").forEach((form) => {
   const optionInputs = Array.from(form.querySelectorAll("[data-variant-option]"));
   const variantInput = form.querySelector("[data-variant-id-input]");

@@ -1,9 +1,29 @@
 <footer class="site-footer" role="contentinfo">
-  <div class="container footer-row">
-    <div>{{ shop.name }}</div>
-    <div>
-      {{ section.settings.note }}
+  <div class="container footer-shell">
+    <div class="footer-row">
+      <div class="footer-side footer-side--left">
+        {{ section.settings.left_text | default: shop.name }}
+      </div>
+
+      <div class="footer-center">
+        {% if section.settings.logo != blank %}
+          {{ section.settings.logo | image_url: width: 260 | image_tag: class: 'footer-logo', alt: shop.name }}
+        {% else %}
+          <div class="footer-brand-fallback">{{ shop.name }}</div>
+        {% endif %}
+      </div>
+
+      <div class="footer-side footer-side--right">
+        {{ section.settings.right_text }}
+      </div>
     </div>
+
+    {% if section.settings.note != blank %}
+      <div class="footer-note">
+        {{ section.settings.note }}
+      </div>
+    </div>
+    {% endif %}
   </div>
 </footer>
 
@@ -11,6 +31,23 @@
 {
   "name": "Footer",
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Center logo"
+    },
+    {
+      "type": "text",
+      "id": "left_text",
+      "label": "Left text",
+      "default": "TCG Box"
+    },
+    {
+      "type": "text",
+      "id": "right_text",
+      "label": "Right text",
+      "default": "Support: hello@tcgbox.store"
+    },
     {
       "type": "text",
       "id": "note",

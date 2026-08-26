@@ -1,57 +1,55 @@
 <section class="section">
-  <div class="container stack-sm">
+  <div class="container stack-sm cart-page" data-cart-page>
     <h1>Cart</h1>
 
     {% if cart.item_count > 0 %}
-      {% form 'cart', cart %}
-        <div class="stack-sm">
-          {% for item in cart.items %}
-            <article class="product-card" style="display:grid;grid-template-columns:120px 1fr;gap:0.8rem;align-items:center;">
-              <a href="{{ item.url }}">
-                <div class="product-card__media" style="aspect-ratio: 1 / 1; border-radius: 14px; overflow: hidden;">
-                  {% if item.image %}
-                    {{ item.image | image_url: width: 300 | image_tag: loading: 'lazy', alt: item.product.title }}
-                  {% endif %}
+      <div class="cart-drawer__items" data-cart-page-items>
+        {% for item in cart.items %}
+          <article class="cart-drawer-item cart-page-item">
+            <a href="{{ item.url }}" class="cart-drawer-item__image">
+              {% if item.image %}
+                {{ item.image | image_url: width: 300 | image_tag: loading: 'lazy', alt: item.product.title }}
+              {% endif %}
+            </a>
+
+            <div class="stack-sm">
+              <a href="{{ item.url }}"><strong>{{ item.product.title }}</strong></a>
+              {% unless item.product.has_only_default_variant %}
+                <div class="cart-drawer-item__meta">{{ item.variant.title }}</div>
+              {% endunless %}
+
+              {% if item.properties != blank %}
+                <div class="cart-drawer-item__meta">
+                  {% for property in item.properties %}
+                    {% assign first_character_in_key = property.first | slice: 0 %}
+                    {% if property.last != blank and first_character_in_key != '_' %}
+                      <div>{{ property.first }}: {{ property.last }}</div>
+                    {% endif %}
+                  {% endfor %}
                 </div>
-              </a>
+              {% endif %}
 
-              <div class="stack-sm" style="padding: 0.8rem 0.8rem 0.8rem 0;">
-                <a href="{{ item.url }}"><strong>{{ item.product.title }}</strong></a>
-                {% unless item.product.has_only_default_variant %}
-                  <div>{{ item.variant.title }}</div>
-                {% endunless %}
+              <div class="cart-drawer-item__price">{{ item.final_line_price | money }}</div>
 
-                {% if item.properties != blank %}
-                  <div>
-                    {% for property in item.properties %}
-                      {% assign first_character_in_key = property.first | slice: 0 %}
-                      {% if property.last != blank and first_character_in_key != '_' %}
-                        <div>{{ property.first }}: {{ property.last }}</div>
-                      {% endif %}
-                    {% endfor %}
-                  </div>
-                {% endif %}
-
-                <div>{{ item.final_line_price | money }}</div>
-                <div class="stack-sm" style="max-width: 140px;">
-                  <label for="Updates_{{ item.key }}">Quantity</label>
-                  <input id="Updates_{{ item.key }}" type="number" name="updates[]" value="{{ item.quantity }}" min="0">
-                </div>
-
-                <div>
-                  <a href="{{ item.url_to_remove }}">Remove</a>
-                </div>
+              <div class="cart-qty" data-line-index="{{ forloop.index }}" data-cart-page-qty>
+                <button type="button" class="cart-qty__button" data-qty-change="decrease" aria-label="Decrease quantity">←</button>
+                <span class="cart-qty__value">{{ item.quantity }}</span>
+                <button type="button" class="cart-qty__button" data-qty-change="increase" aria-label="Increase quantity">→</button>
               </div>
-            </article>
-          {% endfor %}
-        </div>
 
-        <div class="stack-sm" style="margin-top: 1rem; max-width: 320px;">
+              <button type="button" class="cart-drawer-item__remove" data-remove-line="{{ forloop.index }}">Remove</button>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+
+      <div class="cart-drawer__footer cart-page-footer">
+        <div class="stack-sm" style="max-width: 320px;">
           <div><strong>Subtotal: {{ cart.total_price | money }}</strong></div>
-          <button type="submit" name="update" class="button button--ghost">Update cart</button>
-          <button type="submit" name="checkout" class="button button--accent">Checkout</button>
+          <a class="button button--ghost" href="{{ routes.all_products_collection_url }}">Continue shopping</a>
+          <a class="button button--accent" href="{{ routes.cart_url }}/checkout">Checkout</a>
         </div>
-      {% endform %}
+      </div>
     {% else %}
       <p>Your cart is currently empty.</p>
       <a class="button button--accent" href="{{ routes.all_products_collection_url }}">Continue shopping</a>

@@ -445,17 +445,53 @@ a {
 
 .site-footer {
   margin-top: 3rem;
-  border-top: 1px solid #dde2e6;
-  background: #ffffff;
+  border-top: 1px solid #2f3744;
+  background: #17191c;
+}
+
+.footer-shell {
+  padding: 1.4rem 0 1.1rem;
 }
 
 .footer-row {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
-  gap: 0.8rem;
-  padding: 1.2rem 0;
-  color: #6f7478;
+  gap: 1rem;
+  color: #d6dbe2;
+}
+
+.footer-side {
+  flex: 1 1 0;
+  font-size: 0.92rem;
+}
+
+.footer-side--right {
+  text-align: right;
+}
+
+.footer-center {
+  flex: 0 0 auto;
+}
+
+.footer-logo {
+  max-height: 68px;
+  width: auto;
+  display: block;
+}
+
+.footer-brand-fallback {
+  color: #f3f1eb;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footer-note {
+  margin-top: 0.9rem;
+  text-align: center;
+  color: #8f99a7;
+  font-size: 0.82rem;
 }
 
 .stack-sm {
@@ -503,6 +539,46 @@ a {
   background: #ffffff;
   color: #17191c;
   font: inherit;
+}
+
+.about-card {
+  background: #fff;
+  border: 1px solid #dde2e6;
+  border-radius: 24px;
+  padding: 1.1rem;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.about-copy {
+  color: #4e555a;
+}
+
+.about-media {
+  border-radius: 18px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border: 1px solid #dde2e6;
+  background: #f3f6f7;
+}
+
+.about-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-placeholder {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #7a8389;
+  font-size: 0.9rem;
 }
 
 .cart-drawer {
@@ -658,6 +734,18 @@ a {
   margin-top: 0;
 }
 
+.cart-page {
+  max-width: 980px;
+}
+
+.cart-page-item {
+  background: #fff;
+}
+
+.cart-page-footer {
+  margin-top: 0.3rem;
+}
+
 @media (max-width: 768px) {
   .hero {
     padding-top: 1rem;
@@ -682,6 +770,21 @@ a {
 
   .support-form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-side,
+  .footer-side--right {
+    text-align: center;
   }
 
   .site-nav ul {
