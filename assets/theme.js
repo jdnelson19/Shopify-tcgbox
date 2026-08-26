@@ -154,6 +154,46 @@ const fetchCart = async () => {
   return response.json();
 };
 
+const requestCartChange = async ({ lineIndex, lineKey, quantity }) => {
+  const postChange = async (payload) => {
+    const response = await fetch("/cart/change.js", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error("Cart change request failed");
+    }
+
+    return response.json();
+  };
+
+  if (Number.isInteger(lineIndex) && lineIndex > 0) {
+    try {
+      return await postChange({ line: lineIndex, quantity });
+    } catch (error) {
+      if (!lineKey) {
+        throw error;
+      }
+    }
+  }
+
+  if (lineKey) {
+    const cart = await fetchCart();
+    const retryLine = cart.items.findIndex((item) => item.key === lineKey) + 1;
+
+    if (retryLine > 0) {
+      return postChange({ line: retryLine, quantity });
+    }
+  }
+
+  throw new Error("Could not determine cart line item");
+};
+
 const openCartDrawer = async () => {
   if (!cartDrawer) {
     return;
@@ -223,23 +263,17 @@ if (cartDrawerBody) {
       quantity = action === "increase" ? currentQty + 1 : Math.max(currentQty - 1, 0);
     }
 
-    if (!lineIndex && lineIndex !== 0) {
+    if (!lineKey && (!Number.isInteger(lineIndex) || lineIndex < 1)) {
       return;
     }
 
     try {
-      await fetch("/cart/change.js", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(lineKey ? { id: lineKey, quantity } : { line: lineIndex, quantity }),
-      });
-
-      const cart = await fetchCart();
+      const cart = await requestCartChange({ lineIndex, lineKey, quantity });
+      updateCartCount(cart.item_count);
+      renderCartPage(cart);
       renderCartDrawer(cart);
     } catch (error) {
+      console.error(error);
       return;
     }
   });
@@ -247,20 +281,12 @@ if (cartDrawerBody) {
 
 const applyCartPageChange = async (lineIndex, lineKey, quantity) => {
   try {
-    await fetch("/cart/change.js", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(lineKey ? { id: lineKey, quantity } : { line: lineIndex, quantity }),
-    });
-
-    const cart = await fetchCart();
+    const cart = await requestCartChange({ lineIndex, lineKey, quantity });
     updateCartCount(cart.item_count);
     renderCartDrawer(cart);
     renderCartPage(cart);
   } catch (error) {
+    console.error(error);
     return;
   }
 };
