@@ -17,6 +17,14 @@ const formatMoney = (cents) => {
 
 const cartDrawer = document.querySelector("[data-cart-drawer]");
 const cartDrawerBody = document.querySelector("[data-cart-drawer-body]");
+const cartPage = document.querySelector("[data-cart-page]");
+
+const renderItemProperties = (item) => {
+  return Object.entries(item.properties || {})
+    .filter(([key, value]) => value && !String(key).startsWith("_"))
+    .map(([key, value]) => `<div>${key}: ${value}</div>`)
+    .join("");
+};
 
 const updateCartCount = (count) => {
   document.querySelectorAll("[data-cart-count]").forEach((node) => {
@@ -43,10 +51,7 @@ const renderCartDrawer = (cart) => {
 
   const itemsHtml = cart.items
     .map((item, index) => {
-      const props = Object.entries(item.properties || {})
-        .filter(([key, value]) => value && !String(key).startsWith("_"))
-        .map(([key, value]) => `<div>${key}: ${value}</div>`)
-        .join("");
+      const props = renderItemProperties(item);
 
       return `
         <article class="cart-drawer-item">
@@ -76,6 +81,62 @@ const renderCartDrawer = (cart) => {
       <div class="cart-drawer__subtotal">Subtotal: ${formatMoney(cart.total_price)}</div>
       <a class="button button--ghost" href="/cart">View cart</a>
       <a class="button button--accent" href="/checkout" data-drawer-checkout>Checkout</a>
+    </div>
+  `;
+};
+
+const renderCartPage = (cart) => {
+  if (!cartPage) {
+    return;
+  }
+
+  if (cart.item_count === 0) {
+    cartPage.innerHTML = `
+      <h1>Cart</h1>
+      <p>Your cart is currently empty.</p>
+      <a class="button button--accent" href="/collections/all">Continue shopping</a>
+    `;
+    return;
+  }
+
+  const itemsHtml = cart.items
+    .map((item, index) => {
+      const props = renderItemProperties(item);
+
+      return `
+        <article class="cart-drawer-item cart-page-item">
+          <a href="${item.url}" class="cart-drawer-item__image">
+            ${item.image ? `<img src="${item.image}" alt="${item.product_title}">` : ""}
+          </a>
+
+          <div class="stack-sm">
+            <a href="${item.url}"><strong>${item.product_title}</strong></a>
+            ${item.variant_title && item.variant_title !== "Default Title" ? `<div class="cart-drawer-item__meta">${item.variant_title}</div>` : ""}
+            ${props ? `<div class="cart-drawer-item__meta">${props}</div>` : ""}
+            <div class="cart-drawer-item__price">${formatMoney(item.final_line_price)}</div>
+
+            <div class="cart-qty" data-line-index="${index + 1}" data-cart-page-qty>
+              <button type="button" class="cart-qty__button" data-qty-change="decrease" aria-label="Decrease quantity">←</button>
+              <span class="cart-qty__value">${item.quantity}</span>
+              <button type="button" class="cart-qty__button" data-qty-change="increase" aria-label="Increase quantity">→</button>
+            </div>
+
+            <button type="button" class="cart-drawer-item__remove" data-remove-line="${index + 1}">Remove</button>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
+  cartPage.innerHTML = `
+    <h1>Cart</h1>
+    <div class="cart-drawer__items" data-cart-page-items>${itemsHtml}</div>
+    <div class="cart-drawer__footer cart-page-footer">
+      <div class="stack-sm" style="max-width: 320px;">
+        <div><strong>Subtotal: ${formatMoney(cart.total_price)}</strong></div>
+        <a class="button button--ghost" href="/collections/all">Continue shopping</a>
+        <a class="button button--accent" href="/checkout">Checkout</a>
+      </div>
     </div>
   `;
 };
@@ -181,7 +242,6 @@ if (cartDrawerBody) {
   });
 }
 
-const cartPage = document.querySelector("[data-cart-page]");
 const applyCartPageChange = async (lineIndex, quantity) => {
   try {
     await fetch("/cart/change.js", {
@@ -193,7 +253,10 @@ const applyCartPageChange = async (lineIndex, quantity) => {
       body: JSON.stringify({ line: lineIndex, quantity }),
     });
 
-    window.location.reload();
+    const cart = await fetchCart();
+    updateCartCount(cart.item_count);
+    renderCartDrawer(cart);
+    renderCartPage(cart);
   } catch (error) {
     return;
   }
