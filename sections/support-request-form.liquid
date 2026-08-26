@@ -9,9 +9,23 @@
         <p class="support-form-intro">{{ section.settings.text }}</p>
       {% endif %}
 
-      {% form 'contact', class: 'support-form stack-sm' %}
+      {% form 'contact', class: 'support-form stack-sm', data-support-form: 'true' %}
         {% if form.posted_successfully? %}
           <p class="support-form-success">Thanks! Your request has been submitted and we will get back to you shortly.</p>
+
+          <div
+            class="form-success-popup is-visible"
+            data-form-success-popup
+            data-redirect-url="{{ routes.root_url }}"
+            data-redirect-delay="3500"
+            role="status"
+            aria-live="polite"
+          >
+            <div class="form-success-popup__panel">
+              <strong>Request submitted</strong>
+              <p>Returning you to the main store page in a few seconds.</p>
+            </div>
+          </div>
         {% endif %}
 
         {{ form.errors | default_errors }}
@@ -31,15 +45,15 @@
         <div class="support-form-grid">
           <div class="stack-sm">
             <label for="SupportType-{{ section.id }}">Request type</label>
-            <select id="SupportType-{{ section.id }}" name="contact[Request Type]">
-              <option value="Order Support">Order Support</option>
+            <select id="SupportType-{{ section.id }}" name="contact[Request Type]" data-support-request-type>
+              <option value="Order Support" selected>Order Support</option>
               <option value="Custom Order Request">Custom Order Request</option>
             </select>
           </div>
 
-          <div class="stack-sm">
-            <label for="SupportOrder-{{ section.id }}">Order number (optional)</label>
-            <input id="SupportOrder-{{ section.id }}" type="text" name="contact[Order Number]" placeholder="#1001">
+          <div class="stack-sm" data-support-order-field>
+            <label for="SupportOrder-{{ section.id }}">Order number</label>
+            <input id="SupportOrder-{{ section.id }}" type="text" name="contact[Order Number]" placeholder="#1001" data-support-order-input required>
           </div>
         </div>
 

@@ -436,6 +436,38 @@ const initTheme = () => {
       updateVariant();
     }
   });
+
+  document.querySelectorAll("form[data-support-form='true']").forEach((form) => {
+    const requestTypeSelect = form.querySelector("[data-support-request-type]");
+    const orderField = form.querySelector("[data-support-order-field]");
+    const orderInput = form.querySelector("[data-support-order-input]");
+
+    if (!requestTypeSelect || !orderField || !orderInput) {
+      return;
+    }
+
+    const syncSupportFields = () => {
+      const isOrderSupport = requestTypeSelect.value === "Order Support";
+      orderField.classList.toggle("is-hidden", !isOrderSupport);
+      orderInput.required = isOrderSupport;
+
+      if (!isOrderSupport) {
+        orderInput.value = "";
+      }
+    };
+
+    requestTypeSelect.addEventListener("change", syncSupportFields);
+    syncSupportFields();
+  });
+
+  document.querySelectorAll("[data-form-success-popup]").forEach((popup) => {
+    const delay = Number(popup.dataset.redirectDelay || 3500);
+    const redirectUrl = popup.dataset.redirectUrl || "/";
+
+    setTimeout(() => {
+      window.location.href = redirectUrl;
+    }, delay);
+  });
 };
 
 if (document.readyState === "loading") {
