@@ -83,9 +83,7 @@
       "name": "About",
       "settings": {
         "heading": "About TCG Box",
-        "text": "<p>We are collectors serving collectors, focused on trusted products, quick shipping, and fair support.</p>",
-        "button_label": "Learn more",
-        "button_link": ""
+          "text": "<p>We are collectors serving collectors, focused on trusted products, quick shipping, and fair support.</p>"
       }
     }
   },
