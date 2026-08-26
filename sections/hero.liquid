@@ -9,8 +9,11 @@
         {% endif %}
       </div>
 
-      <div class="hero-overlay">
-        <div class="stack-sm hero-content hero-copy">
+      <div class="hero-overlay hero-overlay--{{ section.settings.content_vertical }}">
+        <div
+          class="stack-sm hero-content hero-copy hero-content--{{ section.settings.content_alignment }}"
+          style="--hero-pad-x: {{ section.settings.content_padding_x }}px; --hero-pad-y: {{ section.settings.content_padding_y }}px; --hero-heading-size: {{ section.settings.heading_size }}px;"
+        >
           {% if section.settings.kicker != blank %}
             <span class="hero-kicker">{{ section.settings.kicker }}</span>
           {% endif %}
@@ -52,6 +55,76 @@
       "id": "heading",
       "label": "Heading",
       "default": "Your Next Hit Pull Is Here"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 40,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_vertical",
+      "label": "Vertical position",
+      "default": "bottom",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "middle",
+          "label": "Middle"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "content_padding_x",
+      "label": "Horizontal padding",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "content_padding_y",
+      "label": "Vertical padding",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
     },
     {
       "type": "textarea",

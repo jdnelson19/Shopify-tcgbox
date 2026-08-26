@@ -205,7 +205,7 @@ a {
 }
 
 .hero-content {
-  padding: 2.35rem;
+  padding: var(--hero-pad-y, 2.35rem) var(--hero-pad-x, 2.35rem);
   color: #f3f1eb;
   max-width: 720px;
 }
@@ -216,6 +216,44 @@ a {
   min-height: 480px;
   display: grid;
   align-items: end;
+}
+
+.hero-overlay--top {
+  align-items: start;
+}
+
+.hero-overlay--middle {
+  align-items: center;
+}
+
+.hero-overlay--bottom {
+  align-items: end;
+}
+
+.hero-content--center {
+  text-align: center;
+  margin-inline: auto;
+}
+
+.hero-content--right {
+  text-align: right;
+  margin-left: auto;
+}
+
+.hero-content--center .hero-kicker {
+  margin-inline: auto;
+}
+
+.hero-content--right .hero-kicker {
+  margin-left: auto;
+}
+
+.hero-content--center .hero-actions {
+  justify-content: center;
+}
+
+.hero-content--right .hero-actions {
+  justify-content: flex-end;
 }
 
 .hero-kicker {
@@ -236,7 +274,7 @@ a {
   margin: 0;
   line-height: 0.96;
   letter-spacing: -0.02em;
-  font-size: clamp(2.8rem, 4.7vw, 5.1rem);
+  font-size: clamp(2rem, 6.5vw, var(--hero-heading-size, 5.1rem));
   font-family: "Arial Black", "Arial", "Montserrat", sans-serif;
   font-weight: 900;
   text-transform: uppercase;
