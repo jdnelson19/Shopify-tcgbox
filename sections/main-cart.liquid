@@ -31,13 +31,13 @@
 
               <div class="cart-drawer-item__price">{{ item.final_line_price | money }}</div>
 
-              <div class="cart-qty" data-line-index="{{ forloop.index }}" data-cart-page-qty>
+              <div class="cart-qty" data-line-index="{{ forloop.index }}" data-line-key="{{ item.key }}" data-cart-page-qty>
                 <button type="button" class="cart-qty__button" data-qty-change="decrease" aria-label="Decrease quantity">←</button>
                 <span class="cart-qty__value">{{ item.quantity }}</span>
                 <button type="button" class="cart-qty__button" data-qty-change="increase" aria-label="Increase quantity">→</button>
               </div>
 
-              <button type="button" class="cart-drawer-item__remove" data-remove-line="{{ forloop.index }}">Remove</button>
+              <button type="button" class="cart-drawer-item__remove" data-remove-line="{{ forloop.index }}" data-line-key="{{ item.key }}">Remove</button>
             </div>
           </article>
         {% endfor %}

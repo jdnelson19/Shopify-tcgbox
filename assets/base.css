@@ -91,6 +91,13 @@ a {
   padding: 16px 20px;
 }
 
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
 .topbar-wrap {
   margin-top: 0.45rem;
 }
@@ -790,6 +797,10 @@ a {
   .site-nav ul {
     flex-wrap: wrap;
     justify-content: flex-end;
+  }
+
+  .header-actions {
+    gap: 0.45rem;
   }
 
   .header-cta {

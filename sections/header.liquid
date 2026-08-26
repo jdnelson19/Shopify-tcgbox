@@ -17,28 +17,30 @@
         {% endif %}
       </a>
 
-      <nav class="site-nav main-nav" aria-label="Primary">
-        {% if section.settings.menu != blank %}
-          <ul>
-            {% for link in section.settings.menu.links %}
-              <li>
-                <a class="header-nav-button" href="{{ link.url }}">{{ link.title }}</a>
-              </li>
-            {% endfor %}
-          </ul>
+      <div class="header-actions">
+        <nav class="site-nav main-nav" aria-label="Primary">
+          {% if section.settings.menu != blank %}
+            <ul>
+              {% for link in section.settings.menu.links %}
+                <li>
+                  <a class="header-nav-button" href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </nav>
+
+        <button type="button" class="button button--ghost header-cart-button" data-open-cart-drawer>
+          Cart
+          <span class="cart-count-pill" data-cart-count>{{ cart.item_count }}</span>
+        </button>
+
+        {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+          <a class="button button--accent header-cta" href="{{ section.settings.cta_link }}">
+            {{ section.settings.cta_label }}
+          </a>
         {% endif %}
-      </nav>
-
-      <button type="button" class="button button--ghost header-cart-button" data-open-cart-drawer>
-        Cart
-        <span class="cart-count-pill" data-cart-count>{{ cart.item_count }}</span>
-      </button>
-
-      {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
-        <a class="button button--accent header-cta" href="{{ section.settings.cta_link }}">
-          {{ section.settings.cta_label }}
-        </a>
-      {% endif %}
+      </div>
     </div>
   </div>
 </header>

@@ -63,12 +63,12 @@ const renderCartDrawer = (cart) => {
             ${item.variant_title && item.variant_title !== "Default Title" ? `<div class="cart-drawer-item__meta">${item.variant_title}</div>` : ""}
             ${props ? `<div class="cart-drawer-item__meta">${props}</div>` : ""}
             <div class="cart-drawer-item__price">${formatMoney(item.final_line_price)}</div>
-            <div class="cart-qty" data-line-index="${index + 1}">
+            <div class="cart-qty" data-line-index="${index + 1}" data-line-key="${item.key}">
               <button type="button" class="cart-qty__button" data-qty-change="decrease" aria-label="Decrease quantity">←</button>
               <span class="cart-qty__value">${item.quantity}</span>
               <button type="button" class="cart-qty__button" data-qty-change="increase" aria-label="Increase quantity">→</button>
             </div>
-            <button type="button" class="cart-drawer-item__remove" data-remove-line="${index + 1}">Remove</button>
+            <button type="button" class="cart-drawer-item__remove" data-remove-line="${index + 1}" data-line-key="${item.key}">Remove</button>
           </div>
         </article>
       `;
@@ -115,13 +115,13 @@ const renderCartPage = (cart) => {
             ${props ? `<div class="cart-drawer-item__meta">${props}</div>` : ""}
             <div class="cart-drawer-item__price">${formatMoney(item.final_line_price)}</div>
 
-            <div class="cart-qty" data-line-index="${index + 1}" data-cart-page-qty>
+            <div class="cart-qty" data-line-index="${index + 1}" data-line-key="${item.key}" data-cart-page-qty>
               <button type="button" class="cart-qty__button" data-qty-change="decrease" aria-label="Decrease quantity">←</button>
               <span class="cart-qty__value">${item.quantity}</span>
               <button type="button" class="cart-qty__button" data-qty-change="increase" aria-label="Increase quantity">→</button>
             </div>
 
-            <button type="button" class="cart-drawer-item__remove" data-remove-line="${index + 1}">Remove</button>
+            <button type="button" class="cart-drawer-item__remove" data-remove-line="${index + 1}" data-line-key="${item.key}">Remove</button>
           </div>
         </article>
       `;
@@ -205,10 +205,12 @@ if (cartDrawerBody) {
     event.preventDefault();
 
     let lineIndex;
+    let lineKey;
     let quantity;
 
     if (removeButton) {
       lineIndex = Number(removeButton.dataset.removeLine);
+      lineKey = removeButton.dataset.lineKey;
       quantity = 0;
     } else if (increaseButton) {
       const container = increaseButton.closest("[data-line-index]");
@@ -217,6 +219,7 @@ if (cartDrawerBody) {
       const action = increaseButton.dataset.qtyChange;
 
       lineIndex = Number(container?.dataset.lineIndex);
+      lineKey = container?.dataset.lineKey;
       quantity = action === "increase" ? currentQty + 1 : Math.max(currentQty - 1, 0);
     }
 
@@ -231,7 +234,7 @@ if (cartDrawerBody) {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({ line: lineIndex, quantity }),
+        body: JSON.stringify(lineKey ? { id: lineKey, quantity } : { line: lineIndex, quantity }),
       });
 
       const cart = await fetchCart();
@@ -242,7 +245,7 @@ if (cartDrawerBody) {
   });
 }
 
-const applyCartPageChange = async (lineIndex, quantity) => {
+const applyCartPageChange = async (lineIndex, lineKey, quantity) => {
   try {
     await fetch("/cart/change.js", {
       method: "POST",
@@ -250,7 +253,7 @@ const applyCartPageChange = async (lineIndex, quantity) => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({ line: lineIndex, quantity }),
+      body: JSON.stringify(lineKey ? { id: lineKey, quantity } : { line: lineIndex, quantity }),
     });
 
     const cart = await fetchCart();
@@ -275,17 +278,19 @@ if (cartPage) {
 
     if (removeButton) {
       const lineIndex = Number(removeButton.dataset.removeLine);
-      await applyCartPageChange(lineIndex, 0);
+      const lineKey = removeButton.dataset.lineKey;
+      await applyCartPageChange(lineIndex, lineKey, 0);
       return;
     }
 
     const qtyContainer = qtyButton.closest("[data-cart-page-qty]");
     const qtyValue = qtyContainer?.querySelector(".cart-qty__value");
     const lineIndex = Number(qtyContainer?.dataset.lineIndex);
+    const lineKey = qtyContainer?.dataset.lineKey;
     const currentQty = Number(qtyValue?.textContent || 0);
     const quantity = qtyButton.dataset.qtyChange === "increase" ? currentQty + 1 : Math.max(currentQty - 1, 0);
 
-    await applyCartPageChange(lineIndex, quantity);
+    await applyCartPageChange(lineIndex, lineKey, quantity);
   });
 }
 
