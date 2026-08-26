@@ -30,8 +30,9 @@
       "footer": {
         "type": "footer",
         "settings": {
-          "left_text": "TCG Box",
-          "right_text": "Support: hello@tcgbox.store",
+          "logo": "shopify://shop_images/header_logo.svg",
+          "left_text": "",
+          "right_text": "orders@tcgbox.store",
           "note": "Built for collectors."
         }
       },
