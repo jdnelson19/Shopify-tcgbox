@@ -22,7 +22,7 @@
         "settings": {
           "logo": "shopify://shop_images/header_logo.svg",
           "menu": "main-menu",
-          "announcement": "Free shipping on orders over $100",
+          "announcement": "",
           "cta_label": "Shop now",
           "cta_link": ""
         }
@@ -30,8 +30,14 @@
       "footer": {
         "type": "footer",
         "settings": {
+          "left_text": "TCG Box",
+          "right_text": "Support: hello@tcgbox.store",
           "note": "Built for collectors."
         }
+      },
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {}
       }
     },
     "content_for_index": []
