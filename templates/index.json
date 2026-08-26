@@ -24,19 +24,10 @@
     },
     "intro": {
       "type": "rich-text",
+      "disabled": true,
       "settings": {
         "heading": "Why TCG Box",
         "text": "<p>Fast shipping, verified inventory, and a team that lives and breathes cardboard.</p>"
-      }
-    },
-    "about": {
-      "type": "about",
-      "settings": {
-        "heading": "About TCG Box",
-        "text": "<p>We are collectors serving collectors, focused on trusted products, quick shipping, and fair support.</p>",
-        "image": "",
-        "button_label": "Learn more",
-        "button_link": ""
       }
     },
     "featured": {
@@ -65,6 +56,17 @@
         "products_to_show": 8
       }
     },
+    "about_pDwLnX": {
+      "type": "about",
+      "disabled": true,
+      "name": "About",
+      "settings": {
+        "heading": "About TCG Box",
+        "text": "<p>We are collectors serving collectors, focused on trusted products, quick shipping, and fair support.</p>",
+        "button_label": "Learn more",
+        "button_link": ""
+      }
+    },
     "support_form": {
       "type": "support-request-form",
       "settings": {
@@ -76,10 +78,10 @@
   "order": [
     "hero",
     "intro",
-    "about",
     "featured",
     "featured_collection_cXf7cw",
     "featured_collection_AN8AAC",
+    "about_pDwLnX",
     "support_form"
   ]
 }
