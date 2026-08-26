@@ -14,6 +14,11 @@
       "settings": {
         "kicker": "",
         "heading": "Designed for the way you play",
+        "heading_size": 52,
+        "content_alignment": "left",
+        "content_vertical": "middle",
+        "content_padding_x": 40,
+        "content_padding_y": 28,
         "subheading": "",
         "button_label": "",
         "button_link": "shopify://collections/all",
