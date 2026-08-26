@@ -1,41 +1,42 @@
-document.querySelectorAll('a[href^="#"]').forEach((link) => {
-  link.addEventListener("click", (event) => {
-    const id = link.getAttribute("href");
-    const target = id ? document.querySelector(id) : null;
+const initTheme = () => {
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const id = link.getAttribute("href");
+      const target = id ? document.querySelector(id) : null;
 
-    if (target) {
-      event.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (target) {
+        event.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
+
+  const formatMoney = (cents) => {
+    const value = Number(cents || 0) / 100;
+    return `$${value.toFixed(2)}`;
+  };
+
+  const cartDrawer = document.querySelector("[data-cart-drawer]");
+  const cartDrawerBody = document.querySelector("[data-cart-drawer-body]");
+  const cartPage = document.querySelector("[data-cart-page]");
+
+  const renderItemProperties = (item) => {
+    return Object.entries(item.properties || {})
+      .filter(([key, value]) => value && !String(key).startsWith("_"))
+      .map(([key, value]) => `<div>${key}: ${value}</div>`)
+      .join("");
+  };
+
+  const updateCartCount = (count) => {
+    document.querySelectorAll("[data-cart-count]").forEach((node) => {
+      node.textContent = String(count);
+    });
+  };
+
+  const renderCartDrawer = (cart) => {
+    if (!cartDrawerBody) {
+      return;
     }
-  });
-});
-
-const formatMoney = (cents) => {
-  const value = Number(cents || 0) / 100;
-  return `$${value.toFixed(2)}`;
-};
-
-const cartDrawer = document.querySelector("[data-cart-drawer]");
-const cartDrawerBody = document.querySelector("[data-cart-drawer-body]");
-const cartPage = document.querySelector("[data-cart-page]");
-
-const renderItemProperties = (item) => {
-  return Object.entries(item.properties || {})
-    .filter(([key, value]) => value && !String(key).startsWith("_"))
-    .map(([key, value]) => `<div>${key}: ${value}</div>`)
-    .join("");
-};
-
-const updateCartCount = (count) => {
-  document.querySelectorAll("[data-cart-count]").forEach((node) => {
-    node.textContent = String(count);
-  });
-};
-
-const renderCartDrawer = (cart) => {
-  if (!cartDrawerBody) {
-    return;
-  }
 
   updateCartCount(cart.item_count);
 
@@ -83,12 +84,12 @@ const renderCartDrawer = (cart) => {
       <a class="button button--accent" href="/checkout" data-drawer-checkout>Checkout</a>
     </div>
   `;
-};
+  };
 
-const renderCartPage = (cart) => {
-  if (!cartPage) {
-    return;
-  }
+  const renderCartPage = (cart) => {
+    if (!cartPage) {
+      return;
+    }
 
   if (cart.item_count === 0) {
     cartPage.innerHTML = `
@@ -139,102 +140,102 @@ const renderCartPage = (cart) => {
       </div>
     </div>
   `;
-};
+  };
 
-const fetchCart = async () => {
-  const response = await fetch("/cart.js", {
-    method: "GET",
-    headers: { Accept: "application/json" },
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch cart");
-  }
-
-  return response.json();
-};
-
-const requestCartChange = async ({ lineIndex, lineKey, quantity }) => {
-  const postChange = async (payload) => {
-    const response = await fetch("/cart/change.js", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(payload),
+  const fetchCart = async () => {
+    const response = await fetch("/cart.js", {
+      method: "GET",
+      headers: { Accept: "application/json" },
     });
 
     if (!response.ok) {
-      throw new Error("Cart change request failed");
+      throw new Error("Failed to fetch cart");
     }
 
     return response.json();
   };
 
-  if (Number.isInteger(lineIndex) && lineIndex > 0) {
-    try {
-      return await postChange({ line: lineIndex, quantity });
-    } catch (error) {
-      if (!lineKey) {
-        throw error;
+  const requestCartChange = async ({ lineIndex, lineKey, quantity }) => {
+    const postChange = async (payload) => {
+      const response = await fetch("/cart/change.js", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Cart change request failed");
+      }
+
+      return response.json();
+    };
+
+    if (Number.isInteger(lineIndex) && lineIndex > 0) {
+      try {
+        return await postChange({ line: lineIndex, quantity });
+      } catch (error) {
+        if (!lineKey) {
+          throw error;
+        }
       }
     }
-  }
 
-  if (lineKey) {
-    const cart = await fetchCart();
-    const retryLine = cart.items.findIndex((item) => item.key === lineKey) + 1;
+    if (lineKey) {
+      const cart = await fetchCart();
+      const retryLine = cart.items.findIndex((item) => item.key === lineKey) + 1;
 
-    if (retryLine > 0) {
-      return postChange({ line: retryLine, quantity });
+      if (retryLine > 0) {
+        return postChange({ line: retryLine, quantity });
+      }
     }
-  }
 
-  throw new Error("Could not determine cart line item");
-};
+    throw new Error("Could not determine cart line item");
+  };
 
-const openCartDrawer = async () => {
-  if (!cartDrawer) {
-    return;
-  }
+  const openCartDrawer = async () => {
+    if (!cartDrawer) {
+      return;
+    }
 
-  try {
-    const cart = await fetchCart();
-    renderCartDrawer(cart);
-  } catch (error) {
-    return;
-  }
+    try {
+      const cart = await fetchCart();
+      renderCartDrawer(cart);
+    } catch (error) {
+      return;
+    }
 
-  cartDrawer.classList.add("is-open");
-  cartDrawer.setAttribute("aria-hidden", "false");
-  document.body.style.overflow = "hidden";
-};
+    cartDrawer.classList.add("is-open");
+    cartDrawer.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  };
 
-const closeCartDrawer = () => {
-  if (!cartDrawer) {
-    return;
-  }
+  const closeCartDrawer = () => {
+    if (!cartDrawer) {
+      return;
+    }
 
-  cartDrawer.classList.remove("is-open");
-  cartDrawer.setAttribute("aria-hidden", "true");
-  document.body.style.overflow = "";
-};
+    cartDrawer.classList.remove("is-open");
+    cartDrawer.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  };
 
-document.querySelectorAll("[data-open-cart-drawer]").forEach((button) => {
-  button.addEventListener("click", () => {
-    openCartDrawer();
+  document.querySelectorAll("[data-open-cart-drawer]").forEach((button) => {
+    button.addEventListener("click", () => {
+      openCartDrawer();
+    });
   });
-});
 
-document.querySelectorAll("[data-close-cart-drawer]").forEach((button) => {
-  button.addEventListener("click", () => {
-    closeCartDrawer();
+  document.querySelectorAll("[data-close-cart-drawer]").forEach((button) => {
+    button.addEventListener("click", () => {
+      closeCartDrawer();
+    });
   });
-});
 
-if (cartDrawerBody) {
-  cartDrawerBody.addEventListener("click", async (event) => {
+  if (cartDrawerBody) {
+    cartDrawerBody.addEventListener("click", async (event) => {
     const increaseButton = event.target.closest("[data-qty-change]");
     const removeButton = event.target.closest("[data-remove-line]");
 
@@ -276,23 +277,23 @@ if (cartDrawerBody) {
       console.error(error);
       return;
     }
-  });
-}
-
-const applyCartPageChange = async (lineIndex, lineKey, quantity) => {
-  try {
-    const cart = await requestCartChange({ lineIndex, lineKey, quantity });
-    updateCartCount(cart.item_count);
-    renderCartDrawer(cart);
-    renderCartPage(cart);
-  } catch (error) {
-    console.error(error);
-    return;
+    });
   }
-};
 
-if (cartPage) {
-  cartPage.addEventListener("click", async (event) => {
+  const applyCartPageChange = async (lineIndex, lineKey, quantity) => {
+    try {
+      const cart = await requestCartChange({ lineIndex, lineKey, quantity });
+      updateCartCount(cart.item_count);
+      renderCartDrawer(cart);
+      renderCartPage(cart);
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+  };
+
+  if (cartPage) {
+    cartPage.addEventListener("click", async (event) => {
     const qtyButton = event.target.closest("[data-qty-change]");
     const removeButton = event.target.closest("[data-remove-line]");
 
@@ -317,81 +318,88 @@ if (cartPage) {
     const quantity = qtyButton.dataset.qtyChange === "increase" ? currentQty + 1 : Math.max(currentQty - 1, 0);
 
     await applyCartPageChange(lineIndex, lineKey, quantity);
-  });
-}
-
-document.querySelectorAll("form.js-variant-form").forEach((form) => {
-  const optionInputs = Array.from(form.querySelectorAll("[data-variant-option]"));
-  const variantInput = form.querySelector("[data-variant-id-input]");
-  const variantJson = form.querySelector("script[data-product-variants]");
-  const submitButton = form.querySelector("button[type='submit']");
-
-  let variants = [];
-
-  if (optionInputs.length && variantInput && variantJson) {
-    try {
-      variants = JSON.parse(variantJson.textContent || "[]");
-    } catch (error) {
-      variants = [];
-    }
+    });
   }
 
-  const updateVariant = () => {
-    if (!optionInputs.length || !variantInput || !variants.length) {
-      return;
-    }
+  document.querySelectorAll("form.js-variant-form").forEach((form) => {
+    const optionInputs = Array.from(form.querySelectorAll("[data-variant-option]"));
+    const variantInput = form.querySelector("[data-variant-id-input]");
+    const variantJson = form.querySelector("script[data-product-variants]");
+    const submitButton = form.querySelector("button[type='submit']");
 
-    const selectedValues = optionInputs.map((input) => input.value);
-    const selectedVariant = variants.find((variant) => {
-      return selectedValues.every((value, index) => variant[`option${index + 1}`] === value);
-    });
+    let variants = [];
 
-    if (!selectedVariant) {
-      if (submitButton) {
-        submitButton.disabled = true;
+    if (optionInputs.length && variantInput && variantJson) {
+      try {
+        variants = JSON.parse(variantJson.textContent || "[]");
+      } catch (error) {
+        variants = [];
       }
-      return;
     }
 
-    variantInput.value = selectedVariant.id;
+    const updateVariant = () => {
+      if (!optionInputs.length || !variantInput || !variants.length) {
+        return;
+      }
 
-    if (submitButton) {
-      const addLabel = submitButton.dataset.addToCartLabel || "Add to cart";
-      const soldLabel = submitButton.dataset.soldOutLabel || "Sold out";
-      submitButton.disabled = !selectedVariant.available;
-      submitButton.textContent = selectedVariant.available ? addLabel : soldLabel;
-    }
-  };
-
-  optionInputs.forEach((input) => {
-    input.addEventListener("change", updateVariant);
-  });
-
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    if (submitButton?.disabled) {
-      return;
-    }
-
-    try {
-      await fetch("/cart/add.js", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-        },
-        body: new FormData(form),
+      const selectedValues = optionInputs.map((input) => input.value);
+      const selectedVariant = variants.find((variant) => {
+        return selectedValues.every((value, index) => variant[`option${index + 1}`] === value);
       });
 
-      form.reset();
+      if (!selectedVariant) {
+        if (submitButton) {
+          submitButton.disabled = true;
+        }
+        return;
+      }
+
+      variantInput.value = selectedVariant.id;
+
+      if (submitButton) {
+        const addLabel = submitButton.dataset.addToCartLabel || "Add to cart";
+        const soldLabel = submitButton.dataset.soldOutLabel || "Sold out";
+        submitButton.disabled = !selectedVariant.available;
+        submitButton.textContent = selectedVariant.available ? addLabel : soldLabel;
+      }
+    };
+
+    optionInputs.forEach((input) => {
+      input.addEventListener("change", updateVariant);
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (submitButton?.disabled) {
+        return;
+      }
+
+      try {
+        await fetch("/cart/add.js", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+          },
+          body: new FormData(form),
+        });
+
+        form.reset();
+        updateVariant();
+        await openCartDrawer();
+      } catch (error) {
+        window.location.href = "/cart";
+      }
+    });
+
+    if (optionInputs.length) {
       updateVariant();
-      await openCartDrawer();
-    } catch (error) {
-      window.location.href = "/cart";
     }
   });
+};
 
-  if (optionInputs.length) {
-    updateVariant();
-  }
-});
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initTheme);
+} else {
+  initTheme();
+}
