@@ -27,6 +27,42 @@ const initTheme = () => {
       .join("");
   };
 
+  const renderLineDiscounts = (item) => {
+    const allocations = item.line_level_discount_allocations || [];
+
+    if (!allocations.length) {
+      return "";
+    }
+
+    const rows = allocations
+      .map((allocation) => {
+        const title = allocation.discount_application?.title || "Discount";
+        const amount = formatMoney(allocation.amount);
+        return `<div class="cart-discount-row"><span>${title}</span><span>-${amount}</span></div>`;
+      })
+      .join("");
+
+    return `<div class="cart-discount-list">${rows}</div>`;
+  };
+
+  const renderCartLevelDiscounts = (cart) => {
+    const discounts = cart.cart_level_discount_applications || [];
+
+    if (!discounts.length) {
+      return "";
+    }
+
+    const rows = discounts
+      .map((discount) => {
+        const title = discount.title || "Discount";
+        const amount = formatMoney(discount.total_allocated_amount || 0);
+        return `<div class="cart-discount-row"><span>${title}</span><span>-${amount}</span></div>`;
+      })
+      .join("");
+
+    return `<div class="cart-discount-list">${rows}</div>`;
+  };
+
   const updateCartCount = (count) => {
     document.querySelectorAll("[data-cart-count]").forEach((node) => {
       node.textContent = String(count);
@@ -64,6 +100,7 @@ const initTheme = () => {
             ${item.variant_title && item.variant_title !== "Default Title" ? `<div class="cart-drawer-item__meta">${item.variant_title}</div>` : ""}
             ${props ? `<div class="cart-drawer-item__meta">${props}</div>` : ""}
             <div class="cart-drawer-item__price">${formatMoney(item.final_line_price)}</div>
+            ${renderLineDiscounts(item)}
             <div class="cart-qty" data-line-index="${index + 1}" data-line-key="${item.key}">
               <button type="button" class="cart-qty__button" data-qty-change="decrease" aria-label="Decrease quantity">←</button>
               <span class="cart-qty__value">${item.quantity}</span>
@@ -80,6 +117,7 @@ const initTheme = () => {
     <div class="cart-drawer__items" data-cart-items>${itemsHtml}</div>
     <div class="cart-drawer__footer" data-cart-summary>
       <div class="cart-drawer__subtotal">Subtotal: ${formatMoney(cart.total_price)}</div>
+      ${renderCartLevelDiscounts(cart)}
       <a class="button button--ghost" href="/cart">View cart</a>
       <a class="button button--accent" href="/checkout" data-drawer-checkout>Checkout</a>
     </div>
@@ -115,6 +153,7 @@ const initTheme = () => {
             ${item.variant_title && item.variant_title !== "Default Title" ? `<div class="cart-drawer-item__meta">${item.variant_title}</div>` : ""}
             ${props ? `<div class="cart-drawer-item__meta">${props}</div>` : ""}
             <div class="cart-drawer-item__price">${formatMoney(item.final_line_price)}</div>
+            ${renderLineDiscounts(item)}
 
             <div class="cart-qty" data-line-index="${index + 1}" data-line-key="${item.key}" data-cart-page-qty>
               <button type="button" class="cart-qty__button" data-qty-change="decrease" aria-label="Decrease quantity">←</button>
@@ -135,6 +174,7 @@ const initTheme = () => {
     <div class="cart-drawer__footer cart-page-footer">
       <div class="stack-sm" style="max-width: 320px;">
         <div><strong>Subtotal: ${formatMoney(cart.total_price)}</strong></div>
+        ${renderCartLevelDiscounts(cart)}
         <a class="button button--ghost" href="/collections/all">Continue shopping</a>
         <a class="button button--accent" href="/checkout">Checkout</a>
       </div>

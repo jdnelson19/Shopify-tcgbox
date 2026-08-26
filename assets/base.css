@@ -737,6 +737,23 @@ a {
   font-weight: 700;
 }
 
+.cart-discount-list {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px dashed #cfd8de;
+  border-radius: 12px;
+  background: #f7fafb;
+}
+
+.cart-discount-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  color: #2b4f5b;
+  font-size: 0.84rem;
+}
+
 .cart-drawer__empty p {
   margin-top: 0;
 }

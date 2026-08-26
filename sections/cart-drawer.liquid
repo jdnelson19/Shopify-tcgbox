@@ -37,6 +37,17 @@
 
                 <div class="cart-drawer-item__price">{{ item.final_line_price | money }}</div>
 
+                {% if item.line_level_discount_allocations.size > 0 %}
+                  <div class="cart-discount-list">
+                    {% for discount_allocation in item.line_level_discount_allocations %}
+                      <div class="cart-discount-row">
+                        <span>{{ discount_allocation.discount_application.title }}</span>
+                        <span>-{{ discount_allocation.amount | money }}</span>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
                 <div class="cart-qty" data-line-index="{{ forloop.index }}" data-line-key="{{ item.key }}">
                   <button type="button" class="cart-qty__button" data-qty-change="decrease" aria-label="Decrease quantity">←</button>
                   <span class="cart-qty__value">{{ item.quantity }}</span>
@@ -51,6 +62,18 @@
 
         <div class="cart-drawer__footer" data-cart-summary>
           <div class="cart-drawer__subtotal">Subtotal: {{ cart.total_price | money }}</div>
+
+          {% if cart.cart_level_discount_applications.size > 0 %}
+            <div class="cart-discount-list">
+              {% for discount_application in cart.cart_level_discount_applications %}
+                <div class="cart-discount-row">
+                  <span>{{ discount_application.title }}</span>
+                  <span>-{{ discount_application.total_allocated_amount | money }}</span>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
           <a class="button button--ghost" href="{{ routes.cart_url }}">View cart</a>
           <a class="button button--accent" href="{{ routes.cart_url }}" data-drawer-checkout>Checkout</a>
         </div>
