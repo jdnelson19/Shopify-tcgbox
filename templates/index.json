@@ -37,6 +37,24 @@
         "products_to_show": 8
       }
     },
+    "featured_collection_cXf7cw": {
+      "type": "featured-collection",
+      "name": "Featured collection",
+      "settings": {
+        "heading": "Storage and organization",
+        "collection": "organization-and-storage",
+        "products_to_show": 8
+      }
+    },
+    "featured_collection_AN8AAC": {
+      "type": "featured-collection",
+      "name": "Featured collection",
+      "settings": {
+        "heading": "All Products",
+        "collection": "all-products",
+        "products_to_show": 8
+      }
+    },
     "support_form": {
       "type": "support-request-form",
       "settings": {
@@ -49,6 +67,8 @@
     "hero",
     "intro",
     "featured",
+    "featured_collection_cXf7cw",
+    "featured_collection_AN8AAC",
     "support_form"
   ]
 }
