@@ -55,19 +55,21 @@
         </div>
       {% endif %}
 
-      <button
-        class="button button--accent"
-        type="submit"
-        data-add-to-cart-label="{{ 'products.product.add_to_cart' | t }}"
-        data-sold-out-label="{{ 'products.product.sold_out' | t }}"
-        {% unless product.available %}disabled{% endunless %}
-      >
-        {% if product.available %}
-          {{ 'products.product.add_to_cart' | t }}
-        {% else %}
-          {{ 'products.product.sold_out' | t }}
-        {% endif %}
-      </button>
+      <div class="product-card__form-footer">
+        <button
+          class="button button--accent"
+          type="submit"
+          data-add-to-cart-label="{{ 'products.product.add_to_cart' | t }}"
+          data-sold-out-label="{{ 'products.product.sold_out' | t }}"
+          {% unless product.available %}disabled{% endunless %}
+        >
+          {% if product.available %}
+            {{ 'products.product.add_to_cart' | t }}
+          {% else %}
+            {{ 'products.product.sold_out' | t }}
+          {% endif %}
+        </button>
+      </div>
     {% endform %}
   </div>
 </article>
