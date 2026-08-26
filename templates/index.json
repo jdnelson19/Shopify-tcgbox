@@ -17,7 +17,7 @@
         "subheading": "",
         "button_label": "",
         "button_link": "shopify://collections/all",
-        "secondary_button_label": "View preorders",
+        "secondary_button_label": "",
         "secondary_button_link": "",
         "hero_image": "shopify://shop_images/hero-image.png"
       }
@@ -65,6 +65,13 @@
         "products_to_show": 12
       }
     },
+    "support_form": {
+      "type": "support-request-form",
+      "settings": {
+        "heading": "Order support and custom requests",
+        "text": "Need help with an order or want a custom product request? Send us the details and we will follow up."
+      }
+    },
     "about_pDwLnX": {
       "type": "about",
       "disabled": true,
@@ -75,13 +82,6 @@
         "button_label": "Learn more",
         "button_link": ""
       }
-    },
-    "support_form": {
-      "type": "support-request-form",
-      "settings": {
-        "heading": "Order support and custom requests",
-        "text": "Need help with an order or want a custom product request? Send us the details and we will follow up."
-      }
     }
   },
   "order": [
@@ -91,7 +91,7 @@
     "featured_collection_cXf7cw",
     "featured_collection_NkhFBX",
     "featured_collection_AN8AAC",
-    "about_pDwLnX",
-    "support_form"
+    "support_form",
+    "about_pDwLnX"
   ]
 }
