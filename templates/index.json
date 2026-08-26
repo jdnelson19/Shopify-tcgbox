@@ -79,11 +79,10 @@
     },
     "about_pDwLnX": {
       "type": "about",
-      "disabled": true,
       "name": "About",
       "settings": {
         "heading": "About TCG Box",
-          "text": "<p>We are collectors serving collectors, focused on trusted products, quick shipping, and fair support.</p>"
+        "text": "<p><strong>Made by collectors, for collectors.</strong> TCGbox creates practical, durable products designed to work great without breaking the bank. From deck boxes to organization solutions, we make gear we’d want to use ourselves.</p>"
       }
     }
   },
